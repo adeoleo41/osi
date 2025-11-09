@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo OSI - Comunicación de Internet</title>
+    <style>
+        :root {
+            --capa1: #FF6B6B;
+            --capa2: #FF9E6B;
+            --capa3: #FFD166;
+            --capa4: #06D6A0;
+            --capa5: #118AB2;
+            --capa6: #073B4C;
+            --capa7: #8338EC;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .protocol-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+        
+        .protocol-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .protocol-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .protocol-btn.active {
+            background-color: #2c3e50;
+        }
+        
+        .animation-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .device {
+            width: 200px;
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .device-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .osi-layers {
+            display: flex;
+            flex-direction: column;
+            width: 60%;
+        }
+        
+        .layer {
+            padding: 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            transition: all 0.5s;
+        }
+        
+        .data-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .data-packet {
+            background-color: white;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+        }
+        
+        .protocol-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .protocol-details {
+            display: none;
+        }
+        
+        .protocol-details.active {
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .control-btn {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .control-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .control-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Modelo OSI - Comunicación de Internet</h1>
+        
+        <div class="protocol-selector">
+            <button class="protocol-btn active" data-protocol="https">HTTPS</button>
+            <button class="protocol-btn" data-protocol="smtp">SMTP</button>
+            <button class="protocol-btn" data-protocol="ftp">FTP</button>
+        </div>
+        
+        <div class="animation-container">
+            <div class="device">
+                <div class="device-icon">💻</div>
+                <h3>Estación de Trabajo</h3>
+            </div>
+            
+            <div class="osi-layers">
+                <div class="layer" style="background-color: var(--capa7);">
+                    <span>Capa 7: Aplicación</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Datos de Usuario</div>
+                    </div>
+                </div>
+                <div class="layer" style="background-color: var(--capa6);">
+                    <span>Capa 6: Presentación</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Datos Encriptados/Comprimidos</div>
+                    </div>
+                </div>
+                <div class="layer" style="background-color: var(--capa5);">
+                    <span>Capa 5: Sesión</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Sesión Establecida</div>
+                    </div>
+                </div>
+                <div class="layer" style="background-color: var(--capa4);">
+                    <span>Capa 4: Transporte</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Segmentos TCP</div>
+                    </div>
+                </div>
+                <div class="layer" style="background-color: var(--capa3);">
+                    <span>Capa 3: Red</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Paquetes IP</div>
+                    </div>
+                </div>
+                <div class="layer" style="background-color: var(--capa2);">
+                    <span>Capa 2: Enlace de Datos</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Tramas Ethernet</div>
+                    </div>
+                </div>
+                <div class="layer" style="background-color: var(--capa1);">
+                    <span>Capa 1: Física</span>
+                    <div class="data-flow">
+                        <div class="data-packet">Bits</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device">
+                <div class="device-icon">🌐</div>
+                <h3>Servidor Web</h3>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="start-btn">Iniciar Comunicación</button>
+            <button class="control-btn" id="reset-btn" disabled>Reiniciar</button>
+        </div>
+        
+        <div class="protocol-info">
+            <div class="protocol-details active" id="https-details">
+                <h3>HTTPS (HTTP Secure)</h3>
+                <p>Protocolo seguro de transferencia de hipertexto que utiliza cifrado SSL/TLS para proteger la comunicación.</p>
+                <ul>
+                    <li><strong>Capa 7 (Aplicación):</strong> HTTP - Solicitudes y respuestas web</li>
+                    <li><strong>Capa 6 (Presentación):</strong> SSL/TLS - Cifrado y autenticación</li>
+                    <li><strong>Capa 5 (Sesión):</strong> Establecimiento y mantenimiento de sesiones seguras</li>
+                    <li><strong>Capa 4 (Transporte):</strong> TCP - Conexión confiable puerto 443</li>
+                    <li><strong>Capa 3 (Red):</strong> IP - Direccionamiento lógico</li>
+                    <li><strong>Capa 2 (Enlace):</strong> Ethernet - Direccionamiento físico</li>
+                    <li><strong>Capa 1 (Física):</strong> Transmisión de bits por cable/inalámbrica</li>
+                </ul>
+            </div>
+            
+            <div class="protocol-details" id="smtp-details">
+                <h3>SMTP (Simple Mail Transfer Protocol)</h3>
+                <p>Protocolo para la transferencia de correo electrónico entre servidores.</p>
+                <ul>
+                    <li><strong>Capa 7 (Aplicación):</strong> SMTP - Comandos de correo electrónico</li>
+                    <li><strong>Capa 6 (Presentación):</strong> MIME - Codificación de archivos adjuntos</li>
+                    <li><strong>Capa 5 (Sesión):</strong> Control de sesión de correo</li>
+                    <li><strong>Capa 4 (Transporte):</strong> TCP - Conexión confiable puerto 25</li>
+                    <li><strong>Capa 3 (Red):</strong> IP - Direccionamiento lógico</li>
+                    <li><strong>Capa 2 (Enlace):</strong> Ethernet - Direccionamiento físico</li>
+                    <li><strong>Capa 1 (Física):</strong> Transmisión de bits por cable/inalámbrica</li>
+                </ul>
+            </div>
+            
+            <div class="protocol-details" id="ftp-details">
+                <h3>FTP (File Transfer Protocol)</h3>
+                <p>Protocolo para la transferencia de archivos entre un cliente y un servidor.</p>
+                <ul>
+                    <li><strong>Capa 7 (Aplicación):</strong> FTP - Comandos de transferencia de archivos</li>
+                    <li><strong>Capa 6 (Presentación):</strong> Representación de datos</li>
+                    <li><strong>Capa 5 (Sesión):</strong> Control de sesión (canal de control y datos)</li>
+                    <li><strong>Capa 4 (Transporte):</strong> TCP - Conexiones en puertos 20 (datos) y 21 (control)</li>
+                    <li><strong>Capa 3 (Red):</strong> IP - Direccionamiento lógico</li>
+                    <li><strong>Capa 2 (Enlace):</strong> Ethernet - Direccionamiento físico</li>
+                    <li><strong>Capa 1 (Física):</strong> Transmisión de bits por cable/inalámbrica</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa7);"></div>
+                <span>Capa 7: Aplicación</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa6);"></div>
+                <span>Capa 6: Presentación</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa5);"></div>
+                <span>Capa 5: Sesión</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa4);"></div>
+                <span>Capa 4: Transporte</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa3);"></div>
+                <span>Capa 3: Red</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa2);"></div>
+                <span>Capa 2: Enlace de Datos</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--capa1);"></div>
+                <span>Capa 1: Física</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const protocolButtons = document.querySelectorAll('.protocol-btn');
+            const protocolDetails = document.querySelectorAll('.protocol-details');
+            const startBtn = document.getElementById('start-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const dataFlows = document.querySelectorAll('.data-flow');
+            const layers = document.querySelectorAll('.layer');
+            
+            let currentProtocol = 'https';
+            let animationInProgress = false;
+            
+            // Cambiar protocolo
+            protocolButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (animationInProgress) return;
+                    
+                    protocolButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    protocolDetails.forEach(detail => detail.classList.remove('active'));
+                    
+                    currentProtocol = this.getAttribute('data-protocol');
+                    document.getElementById(`${currentProtocol}-details`).classList.add('active');
+                });
+            });
+            
+            // Iniciar animación
+            startBtn.addEventListener('click', function() {
+                if (animationInProgress) return;
+                
+                animationInProgress = true;
+                startBtn.disabled = true;
+                resetBtn.disabled = false;
+                
+                // Animación de ida (PC -> Servidor)
+                animateDataFlow(0, 6, 'forward', function() {
+                    // Pequeña pausa para simular procesamiento en el servidor
+                    setTimeout(function() {
+                        // Animación de vuelta (Servidor -> PC)
+                        animateDataFlow(6, 0, 'backward', function() {
+                            resetBtn.disabled = false;
+                        });
+                    }, 1000);
+                });
+            });
+            
+            // Reiniciar animación
+            resetBtn.addEventListener('click', function() {
+                resetAnimation();
+            });
+            
+            function animateDataFlow(startLayer, endLayer, direction, callback) {
+                let currentLayer = startLayer;
+                const step = direction === 'forward' ? 1 : -1;
+                
+                function animateNextLayer() {
+                    if ((direction === 'forward' && currentLayer > endLayer) || 
+                        (direction === 'backward' && currentLayer < endLayer)) {
+                        if (callback) callback();
+                        return;
+                    }
+                    
+                    // Mostrar paquete de datos en la capa actual
+                    dataFlows[currentLayer].style.opacity = '1';
+                    
+                    // Resaltar la capa actual
+                    layers[currentLayer].style.transform = 'scale(1.05)';
+                    layers[currentLayer].style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+                    
+                    setTimeout(function() {
+                        // Restaurar capa
+                        layers[currentLayer].style.transform = 'scale(1)';
+                        layers[currentLayer].style.boxShadow = 'none';
+                        
+                        // Ocultar paquete de datos
+                        dataFlows[currentLayer].style.opacity = '0';
+                        
+                        currentLayer += step;
+                        animateNextLayer();
+                    }, 800);
+                }
+                
+                animateNextLayer();
+            }
+            
+            function resetAnimation() {
+                animationInProgress = false;
+                startBtn.disabled = false;
+                resetBtn.disabled = true;
+                
+                dataFlows.forEach(flow => {
+                    flow.style.opacity = '0';
+                });
+                
+                layers.forEach(layer => {
+                    layer.style.transform = 'scale(1)';
+                    layer.style.boxShadow = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
